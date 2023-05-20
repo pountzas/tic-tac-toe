@@ -1,5 +1,7 @@
 "use client";
 
+import Announcer from "@/components/Announcer";
+import GameButton from "@/components/GameButton";
 import Square from "@/components/Square";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -34,6 +36,26 @@ export default function Home() {
   useEffect(() => {
     checkForWinner();
   }, [squares]);
+
+  const checkSquaresEmpty = () => {
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i] !== "") {
+        return false;
+      }
+    }
+    console.log("empty");
+    return true;
+  };
+
+  const checkSquaresFull = () => {
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i] === "") {
+        return false;
+      }
+    }
+    console.log("full");
+    return true;
+  };
 
   const handleSquareClick = (index: number) => () => {
     if (squares[index] === "" && winner === "") {
@@ -74,13 +96,19 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <h1 className="text-4xl">Tic Tac Toe</h1>
+    <main className="">
+      <h1 className="flex items-center justify-center pt-8 text-5xl font-bold text-gray-600">
+        Tic Tac Toe
+      </h1>
       {/* Announcer */}
-
+      <Announcer
+        player={player}
+        winner={winner}
+        checkSquaresFull={checkSquaresFull}
+      />
       {/* game board*/}
-      <section>
-        <div className="flex">
+      <section className="pt-8">
+        <div className="flex items-center justify-center">
           <Square
             disabled={winner !== ""}
             value={squares[0]}
@@ -97,7 +125,7 @@ export default function Home() {
             click={handleSquareClick(2)}
           />
         </div>
-        <div className="flex">
+        <div className="flex items-center justify-center">
           <Square
             disabled={winner !== ""}
             value={squares[3]}
@@ -114,7 +142,7 @@ export default function Home() {
             click={handleSquareClick(5)}
           />
         </div>
-        <div className="flex">
+        <div className="flex items-center justify-center">
           <Square
             disabled={winner !== ""}
             value={squares[6]}
@@ -131,12 +159,15 @@ export default function Home() {
             click={handleSquareClick(8)}
           />
         </div>
-        <button
-          onClick={handlePlayAgain}
-          className="px-2 py-1 mt-4 text-white bg-red-700 rounded-full"
-        >
-          Play Again
-        </button>
+        <div className="flex items-center justify-center pt-6">
+          {!checkSquaresEmpty() && (
+            <GameButton
+              winner={winner}
+              handlePlayAgain={handlePlayAgain}
+              checkSquaresFull={checkSquaresFull}
+            />
+          )}
+        </div>
       </section>
     </main>
   );
