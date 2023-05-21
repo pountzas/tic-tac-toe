@@ -18,9 +18,9 @@ export default function Square({
   return (
     <div
       onClick={() => !disabled && click()}
-      className={`flex items-center justify-center w-20 h-20 m-1 rounded-xl text-4xl font-bold ${
+      className={`flex items-center justify-center w-20 h-20 m-1 rounded-xl text-4xl font-bold shadow-lg shadow-gray-300 ${
         player !== ""
-          ? "bg-gray-400 hover:bg-red-700"
+          ? "bg-gray-400 hover:bg-red-700 hover:swadow-xs"
           : "hover:bg-gray-300 bg-gray-200"
       }`}
     >

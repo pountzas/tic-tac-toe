@@ -81,7 +81,6 @@ export default function Home() {
         return newSquares;
       });
     }
-    console.log(player);
   };
 
   const checkForWinner = () => {
@@ -89,14 +88,12 @@ export default function Home() {
       const a = winningCombos[i][0];
       const b = winningCombos[i][1];
       const c = winningCombos[i][2];
-      console.log("check values", squares[a], squares[b], squares[c]);
       if (
         squares[a] !== "" &&
         squares[a] === squares[b] &&
         squares[a] === squares[c]
       ) {
         setWinner(squares[a]);
-        console.log("winner ", squares[a]);
         return squares[a];
       } else {
         setPlayer(player === "X" ? "O" : "X");
