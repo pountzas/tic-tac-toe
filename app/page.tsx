@@ -2,13 +2,15 @@
 
 import Announcer from "@/components/Announcer";
 import GameButton from "@/components/GameButton";
+import ScoreBoard from "@/components/ScoreBoard";
 import Square from "@/components/Square";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [player, setPlayer] = useState("X");
   const [winner, setWinner] = useState("");
+  const [xScore, setXScore] = useState(0);
+  const [oScore, setOScore] = useState(0);
 
   const winningCombos = [
     [0, 1, 2], // top row
@@ -37,13 +39,28 @@ export default function Home() {
     checkForWinner();
   }, [squares]);
 
+  useEffect(() => {
+    if (winner !== "") {
+      if (winner === "X") {
+        setXScore(xScore + 1);
+      } else {
+        setOScore(oScore + 1);
+      }
+    }
+  }, [winner]);
+
+  const resetScore = () => {
+    setXScore(0);
+    setOScore(0);
+    handlePlayAgain();
+  };
+
   const checkSquaresEmpty = () => {
     for (let i = 0; i < squares.length; i++) {
       if (squares[i] !== "") {
         return false;
       }
     }
-    console.log("empty");
     return true;
   };
 
@@ -53,7 +70,6 @@ export default function Home() {
         return false;
       }
     }
-    console.log("full");
     return true;
   };
 
@@ -64,7 +80,6 @@ export default function Home() {
         newSquares[index] = player;
         return newSquares;
       });
-      // checkForWinner();
     }
     console.log(player);
   };
@@ -91,6 +106,7 @@ export default function Home() {
   };
 
   const handlePlayAgain = () => {
+    setPlayer(player === "X" ? "O" : "X");
     setSquares(["", "", "", "", "", "", "", "", ""]);
     setWinner("");
   };
@@ -100,12 +116,15 @@ export default function Home() {
       <h1 className="flex items-center justify-center pt-8 text-5xl font-bold text-gray-600">
         Tic Tac Toe
       </h1>
-      {/* Announcer */}
+
+      <ScoreBoard resetScore={resetScore} xScore={xScore} oScore={oScore} />
+
       <Announcer
         player={player}
         winner={winner}
         checkSquaresFull={checkSquaresFull}
       />
+
       {/* game board*/}
       <section className="pt-8">
         <div className="flex items-center justify-center">
